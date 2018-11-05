@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import MTabbar from './common/components/mTabbar'
+import MTabbar from 'components/MTabbar'
 
 export default {
   name: 'App',
