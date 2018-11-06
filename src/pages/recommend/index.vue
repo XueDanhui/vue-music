@@ -2,18 +2,48 @@
   <div class="recommend-page">
     <filter-bg></filter-bg>
     <div class="recommend-content">
-      推荐
+      <div class="recommend-slider">
+        <slider v-if="recommends.length">
+          <a :href="item.linkUrl" v-for="item in recommends" :key="item.id">
+            <img :src="item.picUrl" alt="">
+          </a>
+        </slider>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import FilterBg from 'components/FilterBg'
+import Slider from 'components/Slider'
+import {getRecommend} from 'api/recommend'
+import {ERR_OK} from 'common/js/config'
 
 export default {
   name: 'recommend',
   components: {
-    FilterBg
+    FilterBg,
+    Slider
+  },
+  data () {
+    return {
+      recommends: []
+    }
+  },
+  methods: {
+    _getRecommend () {
+      getRecommend().then((res) => {
+        if (res.code === ERR_OK) {
+          console.log(res)
+          this.recommends = res.data.slider
+        }
+      }, (err) => {
+        console.log(err)
+      })
+    }
+  },
+  created () {
+    this._getRecommend()
   }
 }
 </script>
