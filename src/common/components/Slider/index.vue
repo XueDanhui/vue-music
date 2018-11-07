@@ -37,7 +37,7 @@ export default {
     }
   },
   methods: {
-    _setSliderWidth () {
+    _setSliderWidth (isResize) {
       let width = 0
       let sliderWidth = this.$refs.sliderContent.clientWidth
       this.children = this.$refs.sliderGroup.children
@@ -49,7 +49,7 @@ export default {
         width += sliderWidth
       }
 
-      if (this.loop) {
+      if (this.loop && !isResize) {
         width += 2 * sliderWidth
       }
 
@@ -90,6 +90,17 @@ export default {
     if (this.autoPlay) {
       this._play()
     }
+
+    window.addEventListener('resize', () => {
+      if (!this.slider) {
+        return
+      }
+      this._setSliderWidth(true)
+      this.slider.refresh()
+    })
+  },
+  destroyed () {
+    clearTimeout(this.timer)
   }
 }
 </script>
@@ -98,6 +109,7 @@ export default {
   .slider
     position relative
     width 100%
+    overflow hidden
     .slider-group
       height 4rem
     .slider-item
