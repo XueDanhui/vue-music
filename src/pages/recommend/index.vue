@@ -1,19 +1,21 @@
 <template>
   <div class="recommend-page">
     <filter-bg></filter-bg>
-    <div class="recommend-content">
-      <slider v-if="recommends.length">
-        <a :href="item.linkUrl" v-for="item in recommends" :key="item.id">
-          <img :src="item.picUrl" alt="">
-        </a>
-      </slider>
-      <div class="list-content">
-        <text-title text="热门歌单推荐" class="text-title"></text-title>
-        <div class="disList-content" v-if="list.length">
-          <list-item v-for="item in list" :key="item.dissid" :imgUrl="item.imgurl" :desc="item.dissname"></list-item>
+    <scroll class="recommend-content" :data="list" ref="scroll">
+      <div>
+        <slider v-if="recommends.length">
+          <a :href="item.linkUrl" v-for="item in recommends" :key="item.id">
+            <img :src="item.picUrl" alt="" @load="_isLoaded">
+          </a>
+        </slider>
+        <div class="list-content">
+          <text-title text="热门歌单推荐" class="text-title"></text-title>
+          <div class="disList-content" v-if="list.length">
+            <list-item v-for="item in list" :key="item.dissid" :imgUrl="item.imgurl" :desc="item.dissname"></list-item>
+          </div>
         </div>
       </div>
-    </div>
+    </scroll>
   </div>
 </template>
 
@@ -22,6 +24,7 @@ import FilterBg from 'components/FilterBg'
 import Slider from 'components/Slider'
 import TextTitle from 'components/TextTitle'
 import ListItem from './components/ListItem'
+import Scroll from 'components/Scroll'
 import {getRecommend, getDisplayList} from 'api/recommend'
 import {ERR_OK} from 'common/js/config'
 
@@ -31,12 +34,14 @@ export default {
     FilterBg,
     Slider,
     TextTitle,
-    ListItem
+    ListItem,
+    Scroll
   },
   data () {
     return {
       recommends: [],
-      list: []
+      list: [],
+      checkLoaded: false
     }
   },
   methods: {
@@ -55,6 +60,12 @@ export default {
           this.list = res.data.list
         }
       })
+    },
+    _isLoaded () {
+      if (!this.checkLoaded) {
+        this.$refs.scroll._refresh()
+        this.checkLoaded = true
+      }
     }
   },
   created () {
@@ -73,6 +84,7 @@ export default {
     bottom 0
     .recommend-content
       position relative
+      height 100%
       .list-content
         padding 0 .2rem
         box-sizing border-box

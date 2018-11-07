@@ -24,13 +24,13 @@ export default {
 
 <style lang="stylus" scoped>
   @import '~common/stylus/variable.styl'
-  
+
   .listItem-comp
     width 49%
     .list-item
       position relative
       width 100%
-      height 2rem
+      height 2.35rem
       margin-bottom .1rem
       .item-img
         width 100%

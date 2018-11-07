@@ -111,7 +111,7 @@ export default {
     width 100%
     overflow hidden
     .slider-group
-      height 4rem
+      height 3rem
     .slider-item
       display inline-block
       height 100%

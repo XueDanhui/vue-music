@@ -25,6 +25,7 @@ export default {
     line-height .88rem
     background $color-background
     color $color-text
+    z-index 2
     .tabbar-center
       display flex
       justify-content center
